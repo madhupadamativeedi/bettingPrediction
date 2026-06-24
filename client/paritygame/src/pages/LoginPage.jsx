@@ -25,7 +25,7 @@ const LoginPage = () => {
       const data = await res.json();
       console.log(data)
       if(res.ok){
-        navigate("mainPage")
+        navigate("/mainPage")
       }
     } catch (err) {
       console.log(err);
@@ -101,7 +101,7 @@ const LoginPage = () => {
         <div className="mt-8 text-center">
           <p className="text-gray-400">
             Don't have an account?{" "}
-            <span className="text-purple-400 cursor-pointer">Sign Up</span>
+            <span className="text-purple-400 cursor-pointer" onClick={()=>navigate("/register")}>Sign Up</span>
           </p>
         </div>
       </div>
