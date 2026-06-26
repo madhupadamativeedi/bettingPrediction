@@ -1,6 +1,7 @@
 
 const register = require('../controllers/register')
 const express = require('express');
+const authMiddleWare = require('../middleWares/auth.middleWare');
 
 const userRouter = express.Router();
 
@@ -15,6 +16,16 @@ userRouter.post("/register", register.registerUser)
  * @description user login route 
  */
 userRouter.post("/login", register.loginUser) 
+
+
+userRouter.get("/me", authMiddleWare, register.getUser);
+
+/**
+ * @name LogOut
+ * @description user LogOut route 
+ */
+userRouter.post("/logout",authMiddleWare, register.logOut)
+
 
 
 

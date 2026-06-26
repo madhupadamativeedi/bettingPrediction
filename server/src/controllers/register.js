@@ -62,7 +62,7 @@ const loginUser = async (req, res) => {
       });
     }
     const existingUser = await user.findOne({
-      $or: [{ email }, { password }],
+      $or: [{ email }],
     });
     if (!existingUser) {
       return res.status(401).json({
@@ -101,24 +101,41 @@ const loginUser = async (req, res) => {
 };
 
 
-// const User = require("../moduls/user");
-
-const dummydata = async (req, res) => {
+const getUser = async (req, res) => {
   try {
-    const getData = await user.find();
+    const existingUser = await user.findById(req.user.id);
+
+    if (!existingUser) {
+      return res.status(404).json({
+        msg: "User not found",
+      });
+    }
 
     res.status(200).json({
-      msg: "Data fetched successfully",
-      getData,
+      id: existingUser._id,
+      name: existingUser.name,
+      email: existingUser.email,
     });
   } catch (error) {
     res.status(500).json({
-      msg: "Something went wrong",
-      error: error.message,
+      msg: error.message,
     });
   }
 };
 
-module.exports = { dummydata };
+const logOut = async(req,res)=>{
+ try {
 
-module.exports ={ registerUser, loginUser, dummydata};
+  res.clearCookie("token");
+  res.send("Logged out");
+ } catch (error) {
+  res.status(500).json({
+    msg: "Somthing went Wrong",
+    err: error.message,
+  });
+
+ }
+
+}
+
+module.exports ={ registerUser, loginUser, logOut , getUser};
